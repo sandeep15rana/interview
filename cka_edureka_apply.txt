@@ -1,0 +1,1848 @@
+CKA EDUREKA Certification 
+*************************
+
+1) Credentials to Login Edureka 
+=========================================================
+Login URL : https://ecorp.edureka.co/tcstech/signin
+Username  : rana.sandeep1@tcs.com
+Password  : Padmaja1@321
+wgVN0##H
+
+Standalone Workspace
+--------------------
+
+https://console.cloud.google.com/welcome?cloudshell=true&project=disco-glass-384003
+
+2) Step to join zoom session 
+
+Click on My courses -> CKA -> Class Schedule -> Click on specified date and time 
+
+3) To install zoom in ubuntu
+
+https://linuxhint.com/install_zoom_ubuntu-2/
+
+Class 1 
+===========================================
+What is kubernetes
+K8 Architechture
+Deploying k8s cluster in GKE
+
+
+K8s --> Container Orachestrator
+
+Overview --> Notepad ++ 
+To deploy Application 
+============================================
+- OS ( Give computing power ) -> Enables to talk to backend hardware
+- Maintaing OS is costly 
+- 8 CPU 32 GB Allocated -> But Application require only 4 CPU 16 GB also OS also require resources 
+- End user we only interact with Application 
+- To purchase to license for OS is costly , SYS Admin also a cost
+- Application Team only manages a app
+- Deploying many  application in same server willbe conflict 
+* File conflict 
+* Network Conflict ( 8080 port can't run on same server )
+* Both require access to file /etc/hosts
+- Isolation the OS ( It means give it different resources ).. Network , 
+- We require container Orchestrator to do this
+- Container Runtime Environment .. They helps to isolate the OS ..own network ( IP different ) , TCP Stack , username & permission , hostname , queqe ,schemafor , IPC , run various dependencies for eg. Java 8 on one app and Java 10 in other app , --> {{ This is called Containerisation }}
+- This way we can run various application 
+
+Some drawbacks 
+=============================================
+
+- Diagram 
+----------
+app1 , app2 ...app6 
+-----------------------|
+Docker
+-----------------------|
+OS 
+-----------------------|
+
+- If the OS crash -- that is single source of failure .. That is not advisable in Production
+- We require Orchestrator .. How this help to overcome this problem ? 
+==============================================
+- K8s , docker swarm , apache mesosphere these are Orchestrator 
+- How to deploy of K8s ? 
+- Primary jobs of orchestrator .. private Network , Containers will take IPs from private network
+- Node and Machine are same , container can goes to any machine or Node
+- It has inbuild controller to provide the FT and HA for containers 
+- If any of the container fails.. it will create one app in other node ( that is called FT self healing ) 
+- HA ( High Availability ) -- Same application to multiple containers , CPU utilisation and memory ..scaling 
+- Controllers ( In class 4 in details ) 
+
+
+k8s
+====================================
+- Developed by Google in 2009
+- 2009-2013 used as an internal project by Google
+- Google donated to Cloud Native Computing Foundation ( CNCF ) which handles all opensource projects --> anyone can freely available
+- k8s became opensource
+- It is Go Lang ( Google Lang ) 
+- k8s is sold as a service ..flavour of k8s
+- No license require
+GKE 
+EKS 
+AKS 
+RH Openshift ( Rebranded ) but it is k8s 
+Tanzu 
+
+- It is also the defacto std for container apps 
+- Features of k8s .. ways far from others .. autoscaling not possible in docker swarm & apache 
+
+Architechture of k8s
+============================================
+- k8s is a cluster of machines ( sets of machine ) where you run the pods ( not a containers ).. containers run inside the pods
+- Pods is basic unit of scheduling in k8s 
+- K8s don't manages containers directly
+- IPs get assign to Pods 
+- Why container inside pods ? 
+* Since k8s manages dockers/CRI-o/podman/containerd
+* k8s says I don't want to go definition of containers it can be anythigs 
+* So k8s you can have any containers application it will run inside pod only
+----------------------------------------------
+- 2 types of node i.e Master node & Worker Node 
+Master Node --> Control Plane : Node in the cluster that contains all the management components of k8s 
+Worker Node --> Also called as slave/Minion : Node is the cluster where your app pods will be running
+-----------------------------------------------
+- kubectl : CLI to interact with cluster 
+- Who will receive request ? API Server it is the only entry point for incoming and outgoing .. it runs on 6443
+- API server : it has it's own memory ie. pod name , images in form of yaml
+Components of Master
+*********************
+- Controller manager 
+- Schedular 
+- etcd
+
+- All other components continuosly scans the momory
+- In real world we will have multi master env 
+-----------------------------------------------
+Schedular 
+- To decide where pod should go 
+- kubelet : it is client service running on worker node  
+- if schedular decide it should go on worker node 2.. kubelet of node 2 act upon it.
+- kubelet talks to container runtime .. cre pull the images 
+- How to interact with container ?
+- kube-proxy : To send TCP IP traffic to containers ... bcz we services are implementation of kube-proxy. To interact with pods from inside and outside world.
+
+Controller Manager 
+- Who provides FT/AH , auto scaling , tolerence ?
+- It is via controller manager who do all these things for us 
+
+etcd 
+- DB for k8s 
+- store metadata of k8s .. ip, name , containers os 
+- Although pods will run on worker node only
+
+-------------------------------------------------
+- Active - Active components
+
+
+GCP Set UP 
+**********
+
+https://console.cloud.google.com/welcome?pli=1&project=lustrous-bus-230508
+
+- Where is master Node ?
+GCP is cloud vendor is a managing k8s for you , cloud managed service , google managed k8s engine 
+- For security reasons
+- Masters are not created in your project
+- Masters you can't ssh
+- you can't ping 
+- can't see the cluster 
+
+Labs Commands 
+**************
+
+Kubernetes cluster on google cloud using GKE (google kubernetes engine)
+
+Set the region and zone, and enbale the container api and container registry api
+
+1) To get project list 
+
+gcloud projects list
+
+Project No: 968700245539
+Project Id: disco-glass-384003
+
+2) gcloud config set project <project_id_obtained from above command>
+
+gcloud config set project disco-glass-384003
+
+3)
+gcloud config set compute/region us-central1
+gcloud config set compute/zone us-central1-a
+gcloud config set compute/region us-central1
+gcloud config set compute/zone us-central1-a
+
+gcloud config set compute/region us-west2-a
+us-west2-a
+gcloud config set compute/region us-central1
+
+4)
+
+gcloud services enable container.googleapis.com
+
+Error 1 : Resolved
+ERROR: (gcloud.services.enable) FAILED_PRECONDITION: Billing account for project '968700245539' is not found. Billing must be enabled for activation of service(s) 'container.googleapis.com,container.googleapis.com,compute.googleapis.com,compute.googleapis.com,compute.googleapis.com,containerregistry.googleapis.com' to proceed.
+
+5)
+gcloud services enable containerregistry.googleapis.com
+
+=========================================================================================================
+Create the cluster --> 
+gcloud container clusters create hello-cluster --num-nodes=2
+gcloud container clusters get-credentials hello-cluster
+=========================================================================================================
+Delete the cluster --> 
+gcloud container clusters delete hello-cluster
+=========================================================================================================
+
+- gcloud config set project <>
+- gcloud services enable <compute.googleais.com>
+- gcloud services enable <container.googleapis.com>
+- gcloud config set compute/<region name >
+- gcloud config set compure/<region name>
+
+- gcloud container clusters resize hello-cluster --num-node=3
+
+- GKE uses containerd in the backend as CR
+
+Class 2 
+===========================================================
+
+self managed cluster
+pods
+yamls
+
+self managed cluster --> you will be creating the master and worker --> GCP 
+https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-managed-public-cloud/gce
+
+GCP --> 
+
+Pre-req specfic to GCP only 
+
+1. create a network (VPC n/w)
+2. create a subnet
+3. create firewall rules ( 22, 6443....)
+
+Pre-req for deploying k8s cluster --> 
+
+1.  create machines/nodes (min 2 CPU and 2 GB) (master and worker) will take IP from above created network...Some RAM utilise by OS
+2.  Install CRE(docker...) on the machines  
+3.  install k8s packages (kubectl kubelet kubeadm)
+---------------------------------------------------------
+kubeadm is the admin tool for managing the cluster 
+kubeadm is used to create cluster, delete cluster, add a node to cluster, remove a node cluster, upgrade the cluster 
+kubelet : It is client 
+kubectl : To interact with Cluster
+			
+Deployment of cluster will start --> 
+
+1. master --> initialize the cluster 
+2. worker --> worker needs to join the cluster 
+3. master --> Deploy the pod network 
+- Primary job of orchestrator to create network.. so that pod can interact with each other
+- CALICO it is network runtime environment..Private Network Provider ( Third Party Tool) 
+- Default Network GCP have but we need to add firewall rule for all the network
+4. K8s nothing have default.. it just integrate third party 
+
+Alternatives of CALICO
+----------------------
+
+K8s Port Ranges :
+------------------
+https://kubernetes.io/docs/reference/networking/ports-and-protocols/
+
+Network Terminology 
+---------------------
+- Tunnel
+- Gateway
+- Firewall
+- Router
+- tcp/udp ( Transport layer in backend uses tcp ) , icmp ( layer 3 protocol.. layer 3 in backend it uses icmp ) , ipip (ip in ip.. it is tunneling protocol ) 
+
+Statement 
+----------
+zonal
+vpc are global
+region
+subnets are regional 
+
+==================================================================================
+kubeadm init --> 
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 10.240.0.11:6443 --token aulblw.eqsk0x8i3m0tukpg \
+        --discovery-token-ca-cert-hash sha256:08059d4add35272839061e5d7a15f72ed093f4363f0062ee73476c228faa2696
+		
+==================================================================================	
+
+Class 2 : Lab Session 
+
+Create VPC 
+=============================================
+gcloud compute networks create example-k8s --subnet-mode custom
+
+gcloud compute networks subnets create k8s-nodes \
+  --network example-k8s \
+  --range 10.240.0.0/24
+
+gcloud compute firewall-rules create example-k8s-allow-internal \
+  --allow tcp,udp,icmp,ipip \
+  --network example-k8s \
+  --source-ranges 10.240.0.0/24
+
+gcloud compute firewall-rules create example-k8s-allow-external \
+  --allow tcp:22,tcp:6443,icmp \
+  --network example-k8s \
+  --source-ranges 0.0.0.0/0
+
+TO create Controller VM 
+============================================
+Instead of n1-standard-2 : It is very costly
+Machine type : How much resources it will allocaate
+Free Tier : Means 8CPU and 32 GB
+async : to Disk to create 
+image family : OS Ubuntu ( Freely available and widely used ).. Ubuntu 23 available
+private nw : static IP so that it doesn't change
+scope : Tag on the GCP ( GCP specific ) 
+zone : 
+tag : controller VM and connected to 
+
+gcloud compute instances create master \
+    --async \
+    --boot-disk-size 200GB \
+    --can-ip-forward \
+    --image-family ubuntu-1804-lts \
+    --image-project ubuntu-os-cloud \
+    --machine-type e2-medium \
+    --private-network-ip 10.240.0.11 \
+    --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
+    --subnet k8s-nodes \
+    --zone us-central1-a \
+    --tags example-k8s,controller
+	
+gcloud compute instances create worker \
+    --async \
+    --boot-disk-size 200GB \
+    --can-ip-forward \
+    --image-family ubuntu-1804-lts \
+    --image-project ubuntu-os-cloud \
+    --machine-type e2-medium \
+    --private-network-ip 10.240.0.21 \
+    --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
+    --subnet k8s-nodes \
+    --zone us-central1-a \
+    --tags example-k8s,worker
+	
+
+After activity
+-------------------------
+
+Take ssh of the worker and master 
+
+apt : Tha package manager 
+yum : In the redHat 
+
+This set of command we have run on both the Node
+
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl enable docker.service
+sudo apt install -y apt-transport-https curl
+
+Meaning of Below Command 
+-----------------------------
+- Authoticate from gpg
+========================
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+- TO create repository list in OS .. tee means append in the file.. EOF means :wq!.. xenial 16.04 packages are present on it from branch
+- We write [trusted=yes] if we not trusted the key
+=========================================================================================================================================
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+- Packages managers..exe-> Window , .rpm-> centos , .deb-> debian manager
+==========================================================================
+sudo apt-get update
+
+- To install latest version 
+===============================
+sudo apt-get install -y kubelet kubeadm kubectl
+
+TO check version :
+=======================
+dpkg  -l  | grep -i kubeadm 
+dpkg  -l  | grep -i kubectl
+dpkg  -l  | grep -i kubelet 
+
+To get specific version 
+=======================
+sudo apt-get install -y  kubectl=1.26.3 kubeadm=1.26.3 kubelet kubeadm kubectl
+
+Forward compatibility : means adm used to create cluster , the CLI version should be >= 1.26.3  not <=1.26.3
+=============================================================================================================
+
+- If we on hold : this not be upgraded. To protect versioning
+================================================================
+sudo apt-mark hold kubelet kubeadm kubectl
+
+==============================  Till here we have to execute in Both Master & Worker ======================================
+			
+Deployment of cluster will start --> 
+
+1. master --> initialize the cluster 
+2. worker --> worker needs to join the cluster 
+3. master --> Deploy the pod network 
+
+In the master node 
+===================================
+- CALICO 
+- Side range we have to give 
+- COmponents are deployed as a images.. it will pull all the images .. as pod 
+- It will create tunnel between the cluster.. encapulsation IP in IP.. it create tunnel in all the node
+- Keept the output safe 
+--------------------------------
+Network Layer Protocol 
+==========================
+- APp 
+- tcp layer
+- ip : Calico works in this layer
+- dll
+- transport
+
+----------------------------------------------------------------------------------- 
+
+In Master Node 
+
+sudo kubeadm init --pod-network-cidr 192.168.0.0/16
+
+------------------------------ Actual Output we have to run sample ----------------------------------------------------
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+============================= After this we can run kubectl get node command ===========================================
+
+On worker node to join them in a cluster 
+
+Then you can join any number of worker nodes by running the following on each as root: ( Note : We have to run on worker node ) 
+
+kubeadm join 10.240.0.11:6443 --token aulblw.eqsk0x8i3m0tukpg \
+        --discovery-token-ca-cert-hash sha256:08059d4add35272839061e5d7a15f72ed093f4363f0062ee73476c228faa2696
+
+Actual Output 
+================
+kubeadm join 10.240.0.11:6443 --token 71mx60.7mwjh2akxfplbdlq \
+        --discovery-token-ca-cert-hash sha256:d86d2869201fb189a2ac5251011195617db2586e61380e0c00d84285e3b57236
+
+Error : 
+
+error execution phase preflight: couldn't validate the identity of the API Server: Get "https://*.*.*.*:6443/api/v1/namespaces/kube-public/configmaps/cluster-info?timeout=10s": dial tcp *.*.*.*:6443: connect: connection refused
+
+
+To regerneate token 
+==========================
+kubadm token create --print-join-command 
+
+----------------------------------------------------------
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+---------------------------------------------------------------------------------------------------------------
+
+- When we running kubectl command ... goes to API always which run on Master which runs on 6443.. how kubectl know where API running 
+- kubectl refer config file which $HOME/.kube/config : which API address 
+
+
+Connection Refused Error
+=======================
+- file not present
+- IP might be missing
+- Permission denied 
+To get user id and group id 
+-------------------------------
+id -u 
+id -g 
+
+- Authotication and Authorization
+
+To troubleshoot "Not Ready" status .. k8s don't have anyting default but it gives you standard
+===================================
+Pillars of data
+- computing
+- network
+- storage
+
+k8s standards 
+================
+- cri
+- cni 
+- csi
+
+Insall calico on Master Node...To troubleshoot "Not Ready" status
+=====================================================================
+
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/tigera-operator.yaml
+
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/custom-resources.yaml -O
+
+kubectl create -f custom-resources.yaml
+
+================================================================================
+watch kubect get node --> Watch command update command on every two second 
+================================================================================
+
+- Any node with role is none means it is worker node 
+- NS it is a way to segregate pods 
+- kubelet is the guy who create a pods... all the components running on master run as pods..that's why we installed kubelet on master
+- kubeadm pulling the components images for master components
+- That's why it requires container runtime on master
+- This architechture is called Kubernetes Cloud Native Way ... The way it is handling k8s applications same as it's components
+- Why two kube-proxy ?.. one in the master other in the worker node .. which communicate apiserver 
+- GKE create api server on public ip that's why we were ableto connect from remote machine
+- In case of multiple master node we have to create external LB and 
+
+If without cloud provider deployment needs to do 
+===================================================
+https://github.com/kelseyhightower/kubernetes-the-hard-way
+
+https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal?tabs=azure-cli
+
+class 3 
+============================================================
+Agenda for Today's session 
+---------------------------
+How to write Pod's yaml
+Pods command 
+Lables
+Services 
+Types of service 
+
+yamls --> Simple language , plain english , but in form of key:value pairs --> call kubectl to execute 
+
+Four section of pod yamls 
+==============================================
+a) apiVersion : k8s has lots of apiversion together under group
+-------------------------------------------------------------------------
+- core : Exception ( Any version who is a part of release 1.0 we don't have to write ( group/version ) group
+- apps
+- storage
+- networking
+- storageclass
+
+-------------------------------------------------------------------
+kubectl explain <resource_name> : To get api list 
+kubectl api-version : To get apiversion from cli 
+-------------------------------------------------------------------
+Important : 
+
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#nodeselectorrequirement-v1-core
+--------------------------------------------------------------------------
+b) kind : kind of resource u want to create e.g Pod , Service , ConfigMap ( key value pair)
+--------------------------------------------------------------------------
+c) metadata : Dictionary in the yaml file ( What under metadata )
+- indentation is important .. Tab is unindenfied character in yaml file..one space is neccessary.. only one or two spaces 
+- Data about pod .. what can we add in metadata ?..
+- labels : nested dictionary..multiple key value pairs ( dictionary inside dictionary ) 
+- How can we can remeber what we have to write in metadata ?
+- Refere API documentation 
+( Note : indentation is important )
+----------------------------------------------------------------
+d) spec : kind of dictionary , key value pairs, array 
+- What under spec ? 
+- containers : Array ( anything start from - is array..list ) 
+------------------------------------------------------------------
+
+* Container shared the IP of pod and Pod has the IP.. containers don't have IP
+* Docker images are versatile.. can be used with any docker cli
+* k8s manages the pod .. logs basically an application logs or container logs 
+------------------------------------------
+
+To validate yaml 
+----------------
+https://www.yamllint.com/
+
+Multi-Container Pod
+===========================
+- If we do kubectl logs --> By default it will show logs of first container
+- In case of multi-container --> We have to give
+kubectl logs -c <container name>
+
+- To delete pod 
+kubectl delete po < pod name > or 
+kubectl delete -f < pod yaml > 
+- create and apply command 
+- describe command tells you pod failing due to any reason but if container is failing then describe command will not use
+- logs command gives you container logs 
+- Problem is how container communicates ? 
+- For port conflicting use non standard port 1024 - 65535
+- To see the yaml of the pod .. kubectl get po < podname> -o yaml 
+since we write incomplete yaml --> kubectl interact with api --> other components act upon on it to complete
+- We can write in yaml/json --> but json is very difficult
+==============================================================
+Labels 
+-----------------
+- User defined tag to identify the pods 
+- podname is the default name of the label
+Commands :
+===========
+- kubectl get po --show-labels
+- kubectl label pod <pod name> app=<name>  : To give lable to the pod
+- It is also use to filter to the pod
+- Pod can run without labels
+- kubectl get po -l run=  : To select pod with label
+- kubectl lable po testpod run- : To remove label
+================================================================
+Services 
+---------
+- It is a implementation of kube-proxy
+- calico give ip to the pod
+- Services uses internal IP network
+- Endpoint exposing ip of the pod service
+- Services are dns resolved by k8s dns
+- Selectors means selecting pod based on tag
+- can service have multiple endpoints ?
+---------------------------------------
+- serive act as LB when we have multiple replicas of the same pod 
+- What if services die? --> it is config item it can't die without it's own 
+- IPTables entry when we create service on all worker node --> kube-prox--> IPtables is port forwarding rule 
+- If worker node die --> service will die but IPtables entry will be on allthe worker node 
+- Configuration items never consume resources ram , 
+
+Assignments :
+1) Exposing a service without label
+
+Practise Material 
+=================================
+pod yaml file
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: firstpod
+spec:
+  containers:
+    - image: httpd
+      name: firstcontainer
+
+kubectl logs podname
+kubectl exec -it podname bash 
+kubectl get po
+kubectl get po -o wide --show-labels
+kubectl label pod myfirstpod application=nginx
+kubectl label pod myfirstpod application-
+
+
+kubectl get svc
+kubectl get endpoints "service_name"
+kubectl describe svc "service_name"
+kubectl get endpoints "service_name"
+kubectl run lb-pod --image=nginx
+kubectl expose pod lb-pod --type=LoadBalancer --port 80 --target-port 80 --name lbsvc
+
+
+kubectl expose pod firstpod --type=LoadBalancer --port 80 --target-port 80 --name lbsvc
+35.222.147.13:32180/TCP
+-----------------------------------------------------------------------------------------------------------
+For GKE --> please execute below command to have firewall rule created for node port services (30000-32767)
+gcloud compute firewall-rules create test-node-port --allow tcp:30000-32767
+-----------------------------------------------------------------------------------------------------------
+[root@k8s-master ~]# cat yaml/ng_pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myfirstpod
+  labels:
+    app: webserver
+spec:
+  containers:
+    - image: nginx:latest
+      name: nginxcontainer
+	  
+---
+
+[root@k8s-master ~]# cat clusterIP.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myfirstpod-service
+spec:
+  selector:
+    app: webserver
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+  
+---
+
+[root@k8s-master ~]# cat nodeport.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-nodeport
+spec:
+  selector:
+    run: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
+  
+
+Class 4 
+===========================================================
+Types of service 
+Controller
+ReplicaSet
+Deployment
+
+a) TCP Port Communication 
+===========================
+Target Port : Where your container is listening --> Bound to Application 
+Port : Sockert where service is listening --> We can make any number
+
+From get svc command 
+---------------------
+Port : Basically a port service is listening
+- Bydefault curl listen on port 80 
+- IPForwarding : in port section port mapping is done
+- Why port require in svc ? : In case of multicontainer or advance application 
+- Where ever '-' symbol there means it is array --> This block can be repeated 
+
+b) Types of service 
+======================
+- Pod die IP will change --> To communicate with pod effectively 
+- Communication can be internal or External 
+
+ClusterIP : Type of service is used to expose the pod's internally within the k8s cluster , no ext access , it is default type
+NodePort : Type of service that is used to expose the pod's internally within the k8s cluster as well externally 
+LoadBalancer : Type of service that is used to expose the pod's internally within the k8s cluster as well externally 
+- TCP/UDP : If connection stablish the packet are send --> In case of UDP it still send if communction not establish
+- In case of NodePort --> SVC got one port in get svc command --> It has internal range 30000- 32767  only for NodePort service 
+- When it is expose --> It is available in al the node available in the cluster on Node Port
+- That port range these port shoudl be available in GCP Firewall 
+- LB is 100% is equal to NP but it has a extra feature --> It will Load Balance among the node since Node port is available among all the nodes including Master and Worker 
+
+
+What is difference between NodePort and LB ?
+==============================================
+- In case of "ExternalIP" field of get svc output --> LoadBalancer some value will come but incase of NodePort value will be none
+- Only be used in case of CloudManaged Cluster not in case of SelfManagedCluster 
+- In backend TCP Load Balancer is created --> That External IP is basically a TCP LB IP
+- Services are DNS resolved 
+- NodePort Means : Exposing service on port at node ( Important ) 
+- We can give static port in svc but it is not advisable --> Because it can be manually deleted 
+- Every service is subset where LB is superset
+
+c) Controller 
+========================================
+- It is present in Master --> Managing the lifecycle of the pod --> FT/HA/upgrading/creating/scaling
+
+Two types of pod 
+-----------------
+1) static pod or standalone pod --> No controller manager available : Who is created by Kubelet 
+2) ReplicaSet Controller : Which is managed by controller --> That will be creating a pod 
+- Labels is optional for pod but it can't be expose
+
+Definition of Controllers Manager
+=================================
+a) ReplicaSet
+
+- ReplicaSet in an implementation of Controller
+- Definition of static pod
+- It only control based on labels --> It shoud per application 
+- Single Label : MatchLabels
+  Multiple Label : MatchExpressions 
+- If static pods are present it will create replicaSet replicas we define
+
+Formula: 
+
+r - s = no of replica set
+----------------------------
+r : no replicas in replicaSet 
+s : no of static pod 
+
+Static Pod : Pod which is not managed by Controller ... Kind type is kind: Pod
+
+In case of Controller Managed Pod 
+kind: < controller name>
+
+b) Deployment
+
+- Auto scaling option is only available in this controller 
+- ReplicaSet is bit complicated in case of label match
+- containerPort is equivalent to targetPort
+- Deployment is designed to use replicaSet in backend and it is managed the replicas 
+- Why we are using Deployment ? --> To manage replica history 
+
+matchLabels : First the deployment should select the STATIC pod that matched below criteria
+matchExpressions : 
+
+Practise Material 
+========================
+Replicaset --> 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx1
+  labels:
+    app: nginx_1
+spec:
+  containers:
+    - image: nginx:latest
+      name: nginx
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs-nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+      - {key: app, operator: In, values: [nginx_1, nginx_2]}
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx_2
+    spec:
+      containers:
+        - image: nginx:latest
+          name: nginx
+===========================================================================
+
+Deployment -->
+Commands:
+
+kubectl create deployment hello-la --image=nginx:1.19.2
+kubectl get pods
+kubectl get deploy
+kubectl get rs
+kubectl expose deployment hello-la --type=LoadBalancer --port 80 --target-port 80
+kubectl get service
+kubectl scale deployment hello-la --replicas=3
+kubectl autoscale deployment hello-la --max 6 --min 4 --cpu-percent 50
+kubectl set image deployment/hello-la hello-la=nginx:1.19.3
+kubectl rollout history deployment hello-la
+kubectl rollout undo deployments hello-la
+kubectl rollout pause deployment hello-la
+kubectl rollout resume deployment hello-la
+
+Yaml file:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx_deploy
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nginx_deploy
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.8
+        ports:
+        - containerPort: 80
+
+Pending --> class 4 Lab 
+
+class 5
+================================================
+
+Deployment --> Expose(svc) , Update/rollback/Autoscaling
+- Accessing pod which is created by controller
+- Yesterday manual scaling completed
+- CKA/CKAD --> Next Level of CKA is CKAD --> How to create Helm ,charts
+Storage in k8s --> pv/pvc
+
+CKA Certification 
+-------------------
+- 395$ to buy
+- 2 Attempt
+- External Exam
+- 3 years validity
+
+- Apply and Create Difference : Once resource is created we can't use create command again both works same if we are creating resource first time
+- To scale : We have to command <kubectl scale> or change in yaml file ( yaml present in the API ) 
+- Edit command can be use for any resources 
+----------------------------------------------------------
+Expose 
+============
+- Exposing controller ( deployment ) instead of pod --> 
+- Labels changes when we scale 
+- We always write incomplete yaml file ,  API server will do that activity
+- To give specific worker Node ? -- Part of Scheduling ( Session 7 ) 
+- Deployment resource is used for HA and FT.. will create a pod
+
+
+Update and Rollback 
+=============================================
+Update is of two types : 
+- upgrade -->  v3.1 to v3.2
+- downgrade --> v3.2 to v2.0 --> which is not a part of history 
+ 
+Rollback : Rolling back to version which is a part of history
+v3.2 to v3.1 --> which is a part of history 
+
+
+kubectl set image deploy <pod name> <containername>=<exact version>
+
+kubectl set image deploy testdeploy nginx=nginx:1.18
+
+kubectl get deploy ,rs,po 
+
+To change to httpd from nginx
+================================
+testdeploy: deployment name
+nginx: Container name 
+httpd: Image name
+
+kubectl set image deploy testdeploy nginx=httpd --record=True
+
+Note : Only in case of set image command we have to give --record flag 
+
+- Record flag is important to troubleshoot in rollout hitosry change cause None it should not be none 
+- Complete command is recorded for change cause
+
+- When we are upgrading images it is creating new replicas set as we have set to 1.. it has to maintain the replica set rule --> but it will keep old replica set as well
+- Inside that it will create new replica set
+
+kubectl rollout undo deploy testdeploy --to-revision=1
+
+Why we are using replicaset --> To manage the version history
+
+- If we downgrade the application --> Then new version history will get created 
+- "revisionhistorylimit"
+- If we exceed the limit  --> It will terminate the oldest revision 
+- If exceed the replicaset history 
+
+Command 
+---------
+
+"kubectl get deploy testdeploy -o yaml | grep -i revisionhistory"
+
+- Sequencial pod deployment can happen in Pod kind but Controller can't do that it create simultaneously 
+- statefulset ( Controller is very important for FI purspective ) --> For dependant pod deployment ( Refer session 8 ) 
+- To get detailed information of each revision history --> Just describe each replicaset .. It has all the information 
+
+Resource Nomenclature 
+=====================
+
+kubectl get deploy,rs,po 
+
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/testdeploy   3/3     3            3           102m
+
+NAME                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/testdeploy-6ff4477d6f   0         0         0       54m
+replicaset.apps/testdeploy-bdb784545    0         0         0       102m
+replicaset.apps/testdeploy-f8fcd999c    3         3         3       48m
+
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/firstpod                     1/1     Running   0          10h
+pod/testdeploy-f8fcd999c-28dhw   1/1     Running   0          48m
+pod/testdeploy-f8fcd999c-hcf2r   1/1     Running   0          48m
+pod/testdeploy-f8fcd999c-pg8t7   1/1     Running   0          48m
+--------------------------------------------------------------------------------
+Deployment --> testdeploy
+ReplicaSet --> deploymentname-<random string> --> testdeploy-f8fcd999c
+Pod        --> replicasetname-<random string> --> testdeploy-f8fcd999c-pg8t7
+--------------------------------------------------------------------------------
+
+AutoScaling 
+===============================================
+
+- It is done based on the resource it is consuming 
+- CPU and RAM 
+- We have to give thresold limit of the resource 
+- HPA : It is another resource it monitor the pod  create the deployment and if thresold crosses ( Horizontal Pod Autoscaller ) 
+- What HPA will do is to increase replicaset if the thresold is crossed 
+
+"kubectl get deploy,po,hpa"
+
+limits  : maximum resources that will be given to container
+request : minimum gauranteed that container will get 
+
+Conditions should statisfy : 
+===============================
+limits > request 
+
+CPU : Always given in millicore 100m= 1 core
+1m --> 0.001 core ( 1/1000) core
+Mi --> Mebibytes I Mi = 1024 KB = 1024*1024 bytes
+M --> Megabytes 1M = 1000KB 
+
+- If we don't give it container will take what it is require
+
+HPA 
+=========================
+
+"kubectl explain hpa"
+
+- HPA job is to change replica count of the pod and pod creation is done by deployment
+
+To check pod statics 
+=====================
+"kubectl top pods"
+
+Log rotation 
+================
+kubelet configuration log rotation --> It is done automatically
+
+Practise yaml
+====================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginxcontainer
+        image: nginx:1.17
+        resources:
+          limits:
+            cpu: 1m
+	    memory: 40Mi
+          requests:
+            cpu: 1m
+            memory: 30Mi
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-deploy
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 1
+=====================================================
+
+Infinite loop --> script to execute in pod to generate some CPU usage
+
+cat <<EOF | tee infinite.sh
+#!/bin/bash
+for (( ; ; ))
+do
+   echo $HOME
+   echo $SHELL
+   mkdir /testing
+   touch /testing/file{1,2,3,4,5,6,7,8,9}
+   ls -al /testing
+   rm -rf /testing
+done
+EOF
+
+Class 6 
+=========================
+- storage in k8s 
+- scheduling ( node affinity/nodeselector/taints & tolerations )
+
+Q. Suppose if we create container using docker cli and k8s using same image . And we describe that pod it will show containerd . Why ?
+Answer : Docker and containerd both created by Docker company but containerd designed to work with k8s. But docker in the backend talk to containerd only.
+
+- Controller : When pod got destroyed it will create another pod . What about data ?
+- We have SAN/NFS
+- In VM world we used to take backup on regular basis .. that should be secondary option. Harddisk we take from storage vendor like IBM,HP ,HITACHI,etc.Storage capacity will be in range of PB ,TB,GB,etc.
+- NIC card provide
+- HBA ports
+- Switch side we perform zoning
+- LUN external harddisk
+- Communication between storage and server is  ISCSI ( TCP Protocol ) , medium would be different. 
+========================================================================================================
+a) TCP - ISCSI 
+b) FC switch
+- Data will be present in LUN ( pendrive acts as LUN ) 
+- We can use storage of worker node what if worker node crashes ?-- We are going to use External storage
+- LUN will be present as volume in the k8s
+- volume mapped to the pod
+
+------------------------------------------
+Integrate storage's with k8s cluster ( vendor dependant ) 
+a) CSI driver : 
+- Pod app in the k8s that connect with the external storage.. 
+
+Reference : 
+
+https://netapp-trident.readthedocs.io/en/stable-v19.01/kubernetes/trident-csi.html
+
+https://netapp-trident.readthedocs.io/en/stable-v19.01/kubernetes/deploying.html
+
+- OS can't provide storage, driver is a application used to interact with backend hardware
+- Container Storage Interface ( CSI )...
+- Three piller of data center in k8s
+* Computer CRI : docker/CRI-O/podman
+* Nw CNI : CALICO/
+* Storage CSI : NetApp/HP
+
+https://netapp-trident.readthedocs.io/en/stable-v19.01/kubernetes/deploying.html
+
+"kubectl get po -n kube-system"
+
+pd - persistent driver ( two container in each pod ) 
+- netapp
+- emc
+- pw
+
+b) storage class
+- It is resource of k8s
+- value of provisioner storage vendor can give --> definition of driver
+- in sc.yaml --> ( allowVolumeExpansion tag is true)
+- storage class is another resource in the k8s that is used to communicate with driver pod
+- Three types of storage class in GCP 
+---------------------------------------
+* premium- sata
+* standard
+* standard-rwo
+
+=======================================================
+provision the volume in k8s
+a) pvc 
+b) pc
+
+- Flow Diagram : In Gallery picture is there 
+- Access Mode 
+* RWO ( Read write Once ) 
+* ROX ( Read Only Many )
+* RWX ( Read Write Many ) 
+
+- volumes and container are in same inditentation . It means both are created when pod is created 
+- Volumes doesn't consuming CPU and Memory 
+- These are not an application 
+- Volume is like a pendrive 
+- If PVC terminated then only data will lost if not data will be there
+
+===============================================
+Use the volume with pod's 
+a) pod with the volume
+
+-To Expand the volume 
+
+"kubectl edit pvc"
+- allowVolumeExpansion : True
+- Reducing the volume : It may be leads to data corruption.. make sure to backup the data
+
+Scheduling 
+==================
+
+- How it decide where pod shoudl reside 
+- Filtering and scoring mechanism 
+- It filters the nodes based on the resource available on each worker node ... 
+- And score will be given to node 
+
+To customize the scheduling 
+==============================
+- Node selectors 
+- First label the node 
+
+kubectl get node --show-labels
+To create label 
+------------------
+kubectl label node <nodename>  app=<name> 
+
+To delete label
+----------------
+
+kubectl label node <nodename>  app-
+
+- First custome node selection comes into the picture then comes to default 
+- Node Affinity = Node Selectors ( single node label ) 
+We can use multiple node lables
+- Scenarios pictures in the Phone gallery ( R--> Requirement P--> Preference ) 
+
+* Practical part is pending 
+
+class 7 
+=================================================================
+
+Taints --> How NOT to schedule the pod on a specific worker node
+
+Only applied to nodes 
+taints when applied to node it will stop the scheduling on that node
+
+taints --> key:value effect 
+key:value --> user defined with effect
+effect --> NoSchedule , NoExecute , PreferredNoSchedule
+
+To create Taints
+---------------------
+Command :
+
+kubectl get nodes | grep Taint
+kubectl get nodes
+kubectl taint nodes <node name>
+
+What does a taint going to do --> taint will do stop scheduling of pod
+
+Can I create pod's on tainted node ??
+1. Remove the taint ( untaint )
+2. tolerations --> definitions of taint applied to the pod spec so that pod get created on a tainted node 
+
+Tolerations : 
+----------------
+- It is definition of taints 
+- Taints applied to Node but tolerations are applied to pods get created on a tainted node 
+
+What is usecase of Taints ?
+============================
+
+- maintenance ( patching/scanning/upgrading OS/upgrading the k8s version on Nodes ) 
+
+- Master Node --> App Pod's on master ?? --> By  default NO --> Master's are by default tainted nodes 
+
+Effect 
+===================================
+NoSchedule --> will never allow new pod's to be created , already running pod will continue to run 
+NoExecute --> Will never allow new pod's to be created ,already running pod will be terminated
+PreferredNoSchedule --> soft rule that will allow new pod to be created there is no untainted node in the cluster,already running pod will continue to run
+
+kubectl drain worker1 --> 100% equal to NoExecute taint
+
+kubectl cordon worker2 --> 100% equal to NoSchedule
+
+Exact Opposite of drain and cordon command 
+-------------------------------------------
+kubectl uncordon worker1
+kubectl uncordon worker2 
+
+Secrets and Microservice Deployment 
+------------------------------------
+- Anything that starts with '-' it is an Array , that can repeat
+- Secrets is resources in k8s to pass any confidentials info in an encrypted way
+
+- Types of secrets 
+====================
+* Generic : Used to pass the password , private key
+* Token : OAuth ( Open Authentication ) That create token , LDAP ( Live Directory Auth Protocol ) 
+* TLS : Private signed certificate 
+
+To integrate private registry in k8s 
+=======================================
+https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+
+kubectl create secret generic mysql-pass --from-literal=password=Password!
+
+--from-literal --> key value pair ( password=Password! ) 
+
+echo "" | base64 -d 
+
+Using this command we can decode the password 
+
+To overcome this we have concept of RBAC 
+==========================================
+
+ConfigMap : CA Certificate of K8S
+It is generic for all the users 
+
+Application Log Format 
+-----------------------
+Error
+Debug 
+Trace
+
+Microservice Architechture
+============================
+
+- These are independent unit of application when we club together which can run on standalone way called Microservice Architechture . These units are called Microservices. 
+
+- Exactly opposite of these is Monolithic Architechture  , In this  all the components deployed in a single servers only. It can't run independently .
+
+Microservices
+===================
+frontend : 
+cachec : To perform ( frontend don't have to go backend every time ) 
+queue : 
+Backend :
+DB : 
+
+How we deploy such microservices in K8s ?
+=============================================
+
+WordPress
+------------
+
+How to communicate to components 
+==================================
+- If we are using yaml ,don't give password in plaintext format. But in case of command it is allow.
+- When we are creating secret of type generic type shoudl be opach.
+
+http://34.94.165.105/2023/04/25/hello-world/
+
+http://34.94.165.105/wp-login.php?redirect_to=http%3A%2F%2F34.94.165.105%2Fwp-admin%2F&reauth=1
+
+class 8 
+=====================================
+
+Authentication 
+Authorization
+Ingress 
+CKA
+
+supportb2b@edurekain.zohosupport.com --> ticket --> 24hrs --> Apr 17 9.30 AM ( CKA ) 
+
+Within 2 Weeks to Complete Course
+
+Authentication 
+==================================
+
+Username 
+Pwd --> Authenticated 
+
+- Making a simple login 
+- Every user identified using Certificate ( SSL Certs ) 
+For Eg. 
+-----------
+
+- ABC --> public listed company --> NSE/Nasdaq 
+- CEO/CFO --> quater/annual --> reports --> market regulators ( SEBI/SEC ) --> exchange website ( NSE /Nasdaq ) --> available to public 
+
+Is SEBI going to trust the report that CFO has generated ? 
+----------------------------------------------------------
+
+report --> Auditor --> regulators 
+
+Auditors : It is trusted by both parties 
+========================================================
+- Same in IT world this trust is happens from CA which is known to Browser and Users as well 
+- There are well known CAs available in the Market 
+- self Signed Certificate 
+=============================
+- CA which is signed the certificate but not known to browser 
+- It will show "Connection Is Not Secure"
+- Import that CA into Browser 
+
+
+=======================================================
+To see the certificate present in the K8s
+
+- Open this file .kube/config
+- In Config File it is Base64 encoded 
+- ConfigMap it is plaintext 
+- k8s has it's own CA Authority ( Every k8s cluster has it's own CA ) 
+- key , CA & Certificate ( These components require ) 
+
+Steps 
+==============================
+To set home directory for user 
+
+sudo usedadd -m developer 
+
+sudo userdel -m developer 
+
+cat /etc/passwd | grep -i dev
+
+sudo su - developer 
+
+RSA Algorithm and private key generation 
+----------------------------------------
+openssl genrsa -out user.key 
+
+TO generate CSR 
+-----------------
+open req -new -key user.key -out user.csr -subj "/CN=developer/O=dev"
+
+To send K8s --> Basically to API Server
+----------------------------------------
+Every Information send to k8s in form of base64 encoded
+
+To decoded base64 
+--------------------
+echo "" | base64 -d 
+
+Linux Twik --> TO remove new lines 
+------------------------------------
+
+tr -d '\n'
+
+Usage of Certificate 
+=======================
+- Client Auth
+- Digital Verification 
+
+
+developer_csr.yaml 
+-------------------------
+
+
+To send this yaml across k8s
+--------------------------------
+kubectl create -f developer_csr.yaml 
+
+To check the status of the certificate 
+-----------------------------------------
+kubectl get csr dev-user-request | awk '{$3=$4="";print $0}'
+
+To get it approve the CSR 
+----------------------------
+kubectl certificate approve dev-user-request 
+
+To get signed certificate 
+------------------------------
+echo "<encoded>" | base64 -d  > developer.crt 
+
+To get CA Information 
+--------------------------
+
+cat ~/.kube/config ( Encoded one ) or ConfigMap  ( Decoded One ) 
+
+echo "<output from above command> | base64 -d > ca.crt
+
+To check permissions of the files
+-----------------------------------
+
+sudo chown -R developer:developer * 
+
+To check the id of the users 
+--------------------------------
+id 
+
+To copy into home developer
+-------------------------------
+
+cp -pr ./<currentfoler>  /home/developer/
+
+r - recursively
+p - to preserve the permission 
+
+To check the user 
+--------------------
+whoami 
+
+To check whether that user able to access the cluster 
+---------
+
+kubectl get po 
+
+To create ./kube/config file 
+--------------------------------
+
+kubectl config --> This command never go to API 
+
+To Get API IP 
+---------------
+exist from current user -> cat ~/.kube/config 
+
+kubectl config set-cluster usercluster --server=https://<IP of API server>
+
+CA can be pass by two way 
+===========================
+- direct file ( don't give data )
+- passing as data : just encod it 
+
+kubectl config set-cluster usercluster --certificate-authority=ca.crt
+
+kubectl config set-credentials developer --client-key=user.key --client-certificate=developer.crt
+
+kubectl config set-context userspace --cluster=usercluster --namespace=default --user=developer 
+
+Swith to that user 
+--------------------
+kubectl config use-context userspace
+
+Authorization Set Up
+============================
+
+We have to give role and bind to that User
+
+These are one of the method of Authentication..other methods are
+-----------
+- Certificate (TLS)
+
+To explore these 
+--------------------
+- LDAP
+- OIDC
+- AD
+- github
+- Cloud Manage : Google IAM, Azure AD , AWS IAM , SSO
+
+Role & RoleBinding 
+======================
+- Who can give access ? 
+
+In Role yaml under rule tag we have to specify following things 
+-----------------
+- apiGroups  : extensions , apps , ""
+- resources
+- verbs 
+
+Association between Role and User
+----------------------------------
+
+- Automate using Ansible for Many users ( Playbook ) 
+
+To revoke Request 
+--------------------
+- Delete the CSR 
+
+kubectl delte csr dev-user-request
+
+Authorization 
+==================================
+Install a new Software on the Laptop ?
+Format C:\ D:\ 
+Create another user on the laptop ??
+
+- We can't do above activity , bcz we are not authorised to do this activity ( priviledge ) 
+
+Ingress Controller 
+============================================
+
+- Application Load Balancer
+- Way to expose tha application in k8s but on the basis of paths not the tcp ports
+
+Analogy Path based Router ( All are same ) 
+==========================================
+- AWS  : Application LB
+- GCP : http LB
+- Azure : Application Gateway  
+
+Why Ingress ???
+-------------------------
+- Ingress --> k8s Application LB ( HTTP LB path )  --> Works on Layer 7 
+- Other LBs are TCP LB ( port ) --> works on Layer 4 --> Suppose Application ports are same then TCP LB don't work  
+- If we expose using Services , then each application will be having different URL 
+- We want to keep all under single umbrella 
+- Service Used with Ingress should be NodePort or LoadBalancer
+- How DNS translate to IP ?? 
+
+To get Free DNS
+===================
+freenom
+
+TO get Free Certificate 
+==========================
+lets encrypt
+
+Prefix Tag in Ingress
+======================
+- pathType : prefix ( For dynamic path ) /Exact ( For static path ) 
+
+CKA Certification 
+==========================
+Linux Foundation Website 
+Validity of Voucher is 1 Year
+
+25 Q --> 2 hr 
+67%  --> 17 out of 25 should be correct
+No MCQ --> All are practical 
+Exam is openbook -> kubernetes.io -> refer any command 
+ID proof should be handy 
+valid for 3 years
+Use Mobile Hotspot
+More you practise , More Confident you will be 
+It will be Easy 
+
+Practise 
+-----------
+Killer.sh --> Login via Linux Foundation 
+
+To get coupon code
+-------------------
+Subscribe Email on Linux Foundation 
+
+https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/
+
+https://kubernetes.io/docs/concepts/services-networking/ingress/
+
+DeamonSet
+===========================
+- That create pod on the basic of worker node
+- Replica count not specify 
+- In deployment , we specify replica count
+
+StateFulSet
+===================
+3 Unique Features 
+- Ordered provisioning 
+- pod names are always unique 
+- all the pod's have a pvc assigned ( unique storage ) --> Without PVC it will not going to work 
+- Queuing service , processing , DB , cache , stateful applications 
+
+
+Liveness 
+==============
+
+- To check health of the containers
+
+Readiness 
+=================
+- To check whether containers is ready to take request 
+
+
+
+kubectl run test-pod --image=alpine --restart=Never -- sh -c "wget -qO- http://nginx-service:8080"
+
+kubectl run test-pod --image=alpine  --command  -- apk update -- apk install wget   -- --restart=Never -- sh -c "wget -qO- http://nginx-service:8080"
+
+
+Lab Assignment 
+=====================================================================
+
+#To set current project in the GCP 
+
+gcloud config set project disco-glass-384003
+
+# Spinning of the pod ... working Command
+================================
+kubectl run test-pod --image=alpine --restart=Never --command -- sh -c "apk update && apk add --no-cache wget && wget -qO- http://nginx-service:8080"
+
+
+Working Command
+================================
+kubectl run test-pod --image=alpine --restart=Never --command -- sh -c "apk update && apk add --no-cache wget && wget -qO- http://nginx-service:30010"
+
+
+#This will create pod resource 
+==============================
+kubectl run  nginx-web --image=nginx  --labels=Tier=Web
+
+kubectl run  nginx-app --image=alpine --labels=Tier=App
+
+To create deployment resource using run command 
+=================================================
+
+kubectl create deployment nginx-deployment --image=nginx ( Working ) 
+
+Not Working 
+---------------
+kubectl run nginx-deployment --image=nginx --generator=deployment/apps.v1 --replicas=3 --labels=app=nginx
+
+#To convert kubernetes command into yaml file 
+
+kubectl run nginx-deployment --image=nginx --dry-run=client -o yaml > nginx-deployment.yaml
+
+kubectl apply -f nginx-deployment.yaml
+
+
+# Create the namespace
+kubectl create namespace Tenant-B-100Mi
+
+# Set the memory limit for the namespace
+kubectl create quota mem-limit --hard=memory=100Mi --namespace=tenant-b-100mi
+
+
+# To set current context cluster
+kubectl config set-context --current --namespace=tenant-b-100mi
+
+#To check namespace storage limit 
+kubectl describe quota
+
+kubectl run nginx-ns --image=nginx --dry-run=client -o yaml > nginx-ns.yaml
+
+
+kubelet logs
+==============================================
+
+           └─1307 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kube
+
+May 07 11:14:06 worker kubelet[1307]: I0507 11:14:06.928358    1307 scope.go:115] "RemoveContainer" containerID="cb9201a8e8494b9ea11fd59374d4c6f8417b0a91c8c5188c
+May 07 11:14:06 worker kubelet[1307]: E0507 11:14:06.930215    1307 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+May 07 11:14:19 worker kubelet[1307]: I0507 11:14:19.928262    1307 scope.go:115] "RemoveContainer" containerID="cb9201a8e8494b9ea11fd59374d4c6f8417b0a91c8c5188c
+May 07 11:14:19 worker kubelet[1307]: E0507 11:14:19.929223    1307 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+May 07 11:14:34 worker kubelet[1307]: I0507 11:14:34.928855    1307 scope.go:115] "RemoveContainer" containerID="cb9201a8e8494b9ea11fd59374d4c6f8417b0a91c8c5188c
+May 07 11:14:34 worker kubelet[1307]: E0507 11:14:34.929406    1307 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+May 07 11:14:49 worker kubelet[1307]: I0507 11:14:49.928620    1307 scope.go:115] "RemoveContainer" containerID="cb9201a8e8494b9ea11fd59374d4c6f8417b0a91c8c5188c
+May 07 11:14:49 worker kubelet[1307]: E0507 11:14:49.929254    1307 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+May 07 11:15:00 worker kubelet[1307]: I0507 11:15:00.929364    1307 scope.go:115] "RemoveContainer" containerID="cb9201a8e8494b9ea11fd59374d4c6f8417b0a91c8c5188c
+May 07 11:15:00 worker kubelet[1307]: E0507 11:15:00.931454    1307 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+
+
+
+
+May 07 11:21:27 worker kubelet[2058]: I0507 11:21:27.563597    2058 scope.go:115] "RemoveContainer" containerID="a7f33a2b3c115a46b40fe6f2a947fe792ba04cd281282baf
+May 07 11:21:27 worker kubelet[2058]: E0507 11:21:27.565172    2058 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+May 07 11:21:40 worker kubelet[2058]: I0507 11:21:40.563220    2058 scope.go:115] "RemoveContainer" containerID="a7f33a2b3c115a46b40fe6f2a947fe792ba04cd281282baf
+May 07 11:21:40 worker kubelet[2058]: E0507 11:21:40.564481    2058 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+May 07 11:21:53 worker kubelet[2058]: I0507 11:21:53.563055    2058 scope.go:115] "RemoveContainer" containerID="a7f33a2b3c115a46b40fe6f2a947fe792ba04cd281282baf
+May 07 11:21:53 worker kubelet[2058]: E0507 11:21:53.564576    2058 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+May 07 11:22:06 worker kubelet[2058]: I0507 11:22:06.563261    2058 scope.go:115] "RemoveContainer" containerID="a7f33a2b3c115a46b40fe6f2a947fe792ba04cd281282baf
+May 07 11:22:06 worker kubelet[2058]: E0507 11:22:06.563803    2058 pod_workers.go:1281] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"ku
+May 07 11:22:18 worker kubelet[2058]: I0507 11:22:18.562877    2058 scope.go:115] "RemoveContainer" containerID="a7f33a2b3c115a46b40fe6f2a947fe792ba04cd281282baf
+May 07 11:22:18 worker kubelet[2058]: E0507 11:22:18.564292    2058 pod_workers.go:1281] "Error syncing pod, 
+
+
+
+
+
+journalctl -u docker.service
+journalctl -u kubelet.service | grep docker
+docker logs <container-id>
+
+
+
+journalctl -u containerd.service
+journalctl -u kubelet.service | grep containerd
+ctr -n k8s.io task logs <task-id>
+
+# To create svc with label using command 
+==============================================
+kubectl expose deployment nginx-deployment --type=ClusterIP --port=80
+
+
+# To get all the logs of the pods
+=====================================
+kubectl logs deployment/<deployment-name> 
+
+# To get all master component status in one kubectl command 
+===============================================================
+kubectl status componentstatus 
+
+# To create deployment using command 
+
+kubectl create deployment < deployment name> --image=<image name> 
+
+
+# RBAC with namespace implementation 
+
+kubectl create namespace rbac-test
+
+kubectl create sa rbac-test-sa -n rbac-test
+
+
+kubectl create rolebinding rbac-test-rolebinding --role=rbac-test-role --serviceaccount=rbac-test:rbac-test-sa -n rbac-test
+
+
+kubectl delete pod <pod_name> --namespace=rbac-test --as=system:serviceaccount:rbac-test:rbac-test-sa
+
+
+kubectl delete pod role-pod-5b5cb846d6-hgkhq --namespace=rbac-test --as=system:serviceaccount:rbac-test:rbac-test-sa
+
+
+# RBAC with cluster
+
+kubectl create secret generic cluster-user-secretadmin --from-literal=password=<password>
+
+
+kubectl create secret generic cluster-user-secretadmin --from-literal=password=edureka@123
+
+
+
+kubectl --user=cluster-user-secretadmin --namespace=default get secret
+
+# Challenge 
+
+not able to found api-server in default editor of gke
+
+The API server is a component of the Kubernetes control plane and is responsible for exposing the Kubernetes API. In GKE, the API server is managed by Google and you don't have direct access to modify its configuration.
+
+However, you can modify the API server configuration indirectly by using the gcloud command-line tool. You can use the gcloud container clusters get-credentials command to download the cluster credentials, and then modify the API server configuration in the downloaded kubeconfig file.
+
+Here are the steps to modify the API server configuration in GKE:
+
+# TO get zone list in GKE 
+
+gcloud container clusters list
+
+# Run the following command to download the cluster credentials:
+-----------------------------------------------------------------
+gcloud container clusters get-credentials <cluster-name> --zone <zone>
+
+hello-cluster
+us-central1-a
+
+gcloud container clusters get-credentials hello-cluster --zone us-central1-a
+
+
+Replace <cluster-name> with the name of your GKE cluster, and <zone> with the zone where your cluster is located.
+
+Open the kubeconfig file in your favorite editor. The kubeconfig file is located in the ~/.kube directory.
+
+Find the clusters section in the kubeconfig file, and locate the cluster you want to modify.
+
+Under the cluster you want to modify, add a new --encryption-provider-config flag to the command field in the users section. The value of the --encryption-provider-config flag should point to the location of the encryption configuration file you created 
+
+- name: gke_my-cluster
+  user:
+    auth-provider:
+      config:
+        access-token: <redacted>
+        cmd-args: config config-helper --format=json
+        cmd-path: /usr/lib/google-cloud-sdk/bin/gcloud
+        expiry: "2022-05-13T21:06:11Z"
+        expiry-key: '{.credential.token_expiry}'
+        token-key: '{.credential.access_token}'
+      name: gcp
+    client-certificate: /path/to/client-certificate
+    client-key: /path/to/client-key
+    --encryption-provider-config=/home/sandeepkdrana/k8contents/assignments/part5
+
+Replace /path/to/encryption-config.yaml with the location of the encryption configuration file you created earlier.
+
+Save the kubeconfig file.
+
+Use the modified kubeconfig file to interact with your GKE cluster using kubectl.
+
+Replace <redacted> with the actual access token value.
+
+Replace /path/to/client-certificate and /path/to/client-key with the actual paths to your client certificate and client key files.
+
+Replace /path/to/encryption-config.yaml with the actual path to your encryption config file.
+
+# how to get client-key and client-certificate in gke default editor 
+
+
+
+
